@@ -41,12 +41,12 @@ export function InterestsSection() {
         <section id="interests" className="py-24 px-6 bg-card/50">
             <div className="max-w-4xl mx-auto">
                 <div className="flex items-center gap-3 mb-12">
-                    <div className="w-12 h-[1px] bg-primary" />
+                    <div className="w-12 h-px bg-primary" />
                     <h2 className="text-sm font-mono text-primary uppercase tracking-wider">Interests</h2>
                 </div>
 
                 <p className="text-muted-foreground text-lg leading-relaxed mb-12 max-w-2xl">
-                    My interestsSection lie at the intersection of mathematics, computer science, and artificial intelligence. I'm
+                    My interests lie at the intersection of mathematics, computer science, and artificial intelligence. I'm
                     particularly drawn to how machines can learn and make intelligent decisions.
                 </p>
 

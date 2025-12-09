@@ -15,7 +15,7 @@ const contactLinks: ContactLink[] = [
         icon: "mail",
         label: "Email",
         value: "Get in touch",
-        href: "mailto:hello@example.com",
+        href: "srikrishnanethi777@gmail.com",
     },
     {
         icon: "github",
@@ -43,13 +43,13 @@ export function ContactSection() {
         <section id="contact" className="py-24 px-6">
             <div className="max-w-4xl mx-auto">
                 <div className="flex items-center gap-3 mb-12">
-                    <div className="w-12 h-[1px] bg-primary" />
+                    <div className="w-12 h-px bg-primary" />
                     <h2 className="text-sm font-mono text-primary uppercase tracking-wider">Contact</h2>
                 </div>
 
                 <div className="space-y-6">
                     <p className="text-muted-foreground text-lg leading-relaxed max-w-xl">
-                        If you would like to discuss machine learning, collaborate on a project, or just say hi, I'm always happy to
+                        If you would like to discuss machine learning, collaborate on a project, or just say hi, I&#39;m always happy to
                         connect.
                     </p>
 

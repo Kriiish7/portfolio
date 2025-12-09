@@ -7,6 +7,7 @@ import { useRouter, usePathname } from "next/navigation"
 import { Mail, Menu, X } from "lucide-react"
 import { GithubIcon, LinkedinIcon } from "@/components/icons"
 import { ThemeToggle } from "@/components/theme-toggle"
+import { ConstellationLogo } from "@/components/constellation-logo"
 import {cn} from "@/app/utils";
 
 interface NavItem {
@@ -133,8 +134,13 @@ export function Navigation() {
     return (
         <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
             <nav className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-                <a href="#" className="text-lg font-semibold text-foreground" onClick={handleLogoClick}>
-                    SN
+                <a
+                    href="#"
+                    className="flex items-center gap-2 text-lg font-semibold text-foreground hover:text-primary transition-colors"
+                    onClick={handleLogoClick}
+                >
+                    <ConstellationLogo size={32} />
+                    <span className="hidden sm:inline">Srikrishna Nethi</span>
                 </a>
 
                 {/* Desktop Navigation */}

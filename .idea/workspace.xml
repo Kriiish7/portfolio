@@ -4,9 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="71d1ee67-45a1-46c6-bf95-1c7e068bb6bd" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/bun.lock" beforeDir="false" afterPath="$PROJECT_DIR$/bun.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/package.json" afterDir="false" />
+    <list default="true" id="71d1ee67-45a1-46c6-bf95-1c7e068bb6bd" name="Changes" comment="Add postcss package">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/layout.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/app/layout.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -103,8 +103,17 @@
       <workItem from="1765284895051" duration="481000" />
       <workItem from="1765288782670" duration="895000" />
       <workItem from="1765301610057" duration="2141000" />
-      <workItem from="1765303849760" duration="694000" />
+      <workItem from="1765303849760" duration="1307000" />
     </task>
+    <task id="LOCAL-00001" summary="Add postcss package">
+      <option name="closed" value="true" />
+      <created>1765304566410</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1765304566410</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -114,5 +123,7 @@
     <ignored-roots>
       <path value="$PROJECT_DIR$" />
     </ignored-roots>
+    <MESSAGE value="Add postcss package" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add postcss package" />
   </component>
 </project>

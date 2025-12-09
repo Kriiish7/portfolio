@@ -19,10 +19,6 @@ export function BlogSection() {
                     <div className="text-center py-12 bg-card/50 backdrop-blur-sm border border-border rounded-xl">
                         <BookOpen className="w-12 h-12 mx-auto text-muted-foreground mb-4" />
                         <p className="text-muted-foreground mb-2">No blog posts yet</p>
-                        <p className="text-sm text-muted-foreground">
-                            {/*Add markdown files to <code className="text-primary bg-muted px-1.5 py-0.5 rounded">content/blog/</code>{" "}*/}
-                            {/*to get started*/}
-                        </p>
                     </div>
                 ) : (
                     <>

@@ -30,9 +30,9 @@ const navItems: NavItem[] = [
 ]
 
 const socialLinks: SocialLink[] = [
-    { icon: "github", href: "https://github.com", label: "GitHub" },
-    { icon: "linkedin", href: "https://linkedin.com", label: "LinkedIn" },
-    { icon: "mail", href: "mailto:hello@example.com", label: "Email" },
+    { icon: "github", href: "https://github.com/Kriiish7", label: "GitHub" },
+    { icon: "linkedin", href: "https://www.linkedin.com/in/srikrishna-nethi-150153380/", label: "LinkedIn" },
+    { icon: "mail", href: "srikrishnanethi777.com", label: "Email" },
 ]
 
 function SocialIcon({ icon, className }: { icon: SocialLink["icon"]; className?: string }) {

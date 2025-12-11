@@ -4,7 +4,8 @@ import type React from "react"
 
 import { useState } from "react"
 import { useRouter, usePathname } from "next/navigation"
-import { Menu, X } from "lucide-react"
+import { Mail, Menu, X } from "lucide-react"
+import { GithubIcon, LinkedinIcon } from "@/components/icons"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { ConstellationLogo } from "@/components/constellation-logo"
 import {cn} from "@/app/utils";
@@ -14,13 +15,32 @@ interface NavItem {
     href: string
 }
 
+interface SocialLink {
+    icon: "github" | "linkedin" | "mail"
+    href: string
+    label: string
+}
+
 const navItems: NavItem[] = [
-    { label: "Home", href: "#about" },
+    { label: "About", href: "#about" },
     { label: "Education", href: "#education" },
     { label: "Interests", href: "#interests" },
     { label: "Blog", href: "/blog" },
     { label: "Contact", href: "#contact" },
 ]
+
+const socialLinks: SocialLink[] = [
+    { icon: "github", href: "https://github.com", label: "GitHub" },
+    { icon: "linkedin", href: "https://linkedin.com", label: "LinkedIn" },
+    { icon: "mail", href: "mailto:hello@example.com", label: "Email" },
+]
+
+function SocialIcon({ icon, className }: { icon: SocialLink["icon"]; className?: string }) {
+    if (icon === "mail") return <Mail className={className} />
+    if (icon === "github") return <GithubIcon className={className} />
+    if (icon === "linkedin") return <LinkedinIcon className={className} />
+    return null
+}
 
 export function Navigation() {
     const [mobileMenuOpen, setMobileMenuOpen] = useState(false)
@@ -34,6 +54,7 @@ export function Navigation() {
         const distance = targetPosition - startPosition
         let startTime: number | null = null
 
+        // Custom easing function - easeInOutCubic for smooth deceleration
         const easeInOutCubic = (t: number): number => {
             return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2
         }
@@ -49,6 +70,7 @@ export function Navigation() {
             if (timeElapsed < duration) {
                 requestAnimationFrame(animation)
             } else {
+                // Add highlight animation to target section
                 targetElement.classList.add("scroll-highlight")
                 setTimeout(() => {
                     targetElement.classList.remove("scroll-highlight")
@@ -109,59 +131,56 @@ export function Navigation() {
         }
     }
 
-    const isActive = (href: string) => {
-        if (href.startsWith("#")) {
-            return pathname === "/"
-        }
-        return pathname === href || pathname.startsWith(href)
-    }
-
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 bg-background/60 backdrop-blur-xl">
-            <nav className="max-w-6xl mx-auto px-6 py-5 flex items-center justify-between">
-                <div className="hidden md:flex items-center gap-10">
+        <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+            <nav className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+                <a
+                    href="#"
+                    className="flex items-center gap-2 text-lg font-semibold text-foreground hover:text-primary transition-colors"
+                    onClick={handleLogoClick}
+                >
+                    <ConstellationLogo size={32} />
+                    <span className="hidden sm:inline">Srikrishna Nethi</span>
+                </a>
+
+                {/* Desktop Navigation */}
+                <div className="hidden md:flex items-center gap-8">
                     {navItems.map((item) => (
                         <a
                             key={item.href}
                             href={item.href}
-                            className={cn(
-                                "text-sm font-medium transition-colors relative py-1",
-                                isActive(item.href) ? "text-foreground" : "text-muted-foreground hover:text-foreground",
-                            )}
+                            className="text-sm text-muted-foreground hover:text-primary transition-colors"
                             onClick={(e) => handleNavClick(e, item.href)}
                         >
                             {item.label}
-                            {item.href === "/blog" && pathname.startsWith("/blog") && (
-                                <span className="absolute -bottom-1 left-0 right-0 h-0.5 bg-foreground rounded-full" />
-                            )}
                         </a>
                     ))}
                 </div>
 
                 <div className="hidden md:flex items-center gap-4">
+                    {socialLinks.map((link) => (
+                        <a
+                            key={link.label}
+                            href={link.href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-muted-foreground hover:text-primary transition-colors"
+                            aria-label={link.label}
+                        >
+                            <SocialIcon icon={link.icon} className="w-5 h-5" />
+                        </a>
+                    ))}
                     <ThemeToggle />
-                    <a
-                        href="#"
-                        className="flex items-center gap-2 text-foreground hover:text-primary transition-colors"
-                        onClick={handleLogoClick}
-                    >
-                        <ConstellationLogo size={36} />
-                    </a>
                 </div>
 
-                {/* Mobile: Logo left, menu right */}
-                <a href="#" className="md:hidden flex items-center" onClick={handleLogoClick}>
-                    <ConstellationLogo size={32} />
-                </a>
-
-                <div className="md:hidden flex items-center gap-3">
+                <div className="md:hidden flex items-center gap-2">
                     <ThemeToggle />
                     <button
-                        className="text-foreground p-1"
+                        className="text-foreground"
                         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                         aria-label="Toggle menu"
                     >
-                        {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+                        {mobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                     </button>
                 </div>
             </nav>
@@ -169,24 +188,35 @@ export function Navigation() {
             {/* Mobile Navigation */}
             <div
                 className={cn(
-                    "md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-xl transition-all duration-300",
+                    "md:hidden absolute top-full left-0 right-0 bg-background/95 backdrop-blur-md border-b border-border transition-all duration-300",
                     mobileMenuOpen ? "opacity-100 visible" : "opacity-0 invisible",
                 )}
             >
-                <div className="px-6 py-4 flex flex-col gap-1">
+                <div className="px-6 py-4 flex flex-col gap-4">
                     {navItems.map((item) => (
                         <a
                             key={item.href}
                             href={item.href}
-                            className={cn(
-                                "text-sm font-medium transition-colors py-3",
-                                isActive(item.href) ? "text-foreground" : "text-muted-foreground hover:text-foreground",
-                            )}
+                            className="text-muted-foreground hover:text-primary transition-colors py-2"
                             onClick={(e) => handleNavClick(e, item.href)}
                         >
                             {item.label}
                         </a>
                     ))}
+                    <div className="flex items-center gap-4 pt-4 border-t border-border">
+                        {socialLinks.map((link) => (
+                            <a
+                                key={link.label}
+                                href={link.href}
+                                target="_blank"
+                                rel="noopener noreferrer"
+                                className="text-muted-foreground hover:text-primary transition-colors"
+                                aria-label={link.label}
+                            >
+                                <SocialIcon icon={link.icon} className="w-5 h-5" />
+                            </a>
+                        ))}
+                    </div>
                 </div>
             </div>
         </header>

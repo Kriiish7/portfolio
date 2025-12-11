@@ -132,7 +132,7 @@ export function Navigation() {
     }
 
     return (
-        <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border">
+        <header className="fixed top-0 left-0 right-0 z-50 bg-background/80 backdrop-blur-md border-b border-border opacity-50">
             <nav className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
                 <a
                     href="#"

@@ -12,7 +12,6 @@ export default function Home() {
         <main className="relative min-h-screen bg-background">
             <NeuralNetworkBg />
             <div className="relative z-10">
-                <Navigation />
                 <HeroSection />
                 <EducationSection />
                 <InterestsSection />

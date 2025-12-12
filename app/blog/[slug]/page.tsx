@@ -7,6 +7,7 @@ import { Calendar, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { notFound } from "next/navigation"
 import {extractTableOfContents, getAllPosts, getPostBySlug} from "@/app/blog";
+import {Metadata} from "next";
 
 interface BlogPostPageProps {
     params: Promise<{ slug: string }>
@@ -17,7 +18,7 @@ export async function generateStaticParams() {
     return posts.map((post) => ({ slug: post.slug }))
 }
 
-export async function generateMetadata({ params }: BlogPostPageProps) {
+export async function generateMetadata({ params }: BlogPostPageProps): Promise<Metadata> {
     const { slug } = await params
     const post = getPostBySlug(slug)
 

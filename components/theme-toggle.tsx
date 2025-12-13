@@ -9,7 +9,6 @@ export function ThemeToggle() {
     useEffect(() => {
         const savedTheme = localStorage.getItem("theme")
         if (savedTheme) {
-            // eslint-disable-next-line react-hooks/set-state-in-effect
             setIsDark(savedTheme === "dark")
         } else {
             setIsDark(window.matchMedia("(prefers-color-scheme: dark)").matches)

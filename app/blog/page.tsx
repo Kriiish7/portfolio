@@ -1,24 +1,29 @@
+import { createClient } from "@/lib/supabase/server"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { NeuralNetworkBg } from "@/components/neural-network-bg"
 import { Calendar, ArrowLeft, BookOpen } from "lucide-react"
 import Link from "next/link"
-import {getAllPosts} from "@/app/blog";
+import type { BlogPost } from "@/lib/blog-db"
 
 export const metadata = {
     title: "Blog | Srikrishna Nethi",
     description: "Thoughts on machine learning, deep learning, and my journey in tech",
 }
 
-export default function BlogPage() {
-    const posts = getAllPosts()
+export default async function BlogPage() {
+    const supabase = await createClient()
+    const { data: posts } = await supabase
+        .from("blog_posts")
+        .select("*")
+        .eq("published", true)
+        .order("created_at", { ascending: false })
 
     return (
         <main className="relative min-h-screen bg-background">
             <NeuralNetworkBg />
+            <Navigation />
             <div className="relative z-10">
-                <Navigation />
-
                 <div className="pt-32 pb-20 px-6">
                     <div className="max-w-4xl mx-auto">
                         <Link
@@ -33,16 +38,18 @@ export default function BlogPage() {
                             Thoughts on machine learning, deep learning, and my journey in tech
                         </p>
 
-                        {posts.length === 0 ? (
+                        {!posts || posts.length === 0 ? (
                             <div className="text-center py-16 bg-card/50 backdrop-blur-sm border border-border rounded-xl">
                                 <BookOpen className="w-16 h-16 mx-auto text-muted-foreground mb-4" />
                                 <h2 className="text-xl font-semibold text-foreground mb-2">No blog posts yet</h2>
-                                <p className="text-muted-foreground mb-4">Add markdown files to get started</p>
-                                <code className="text-sm text-primary bg-muted px-3 py-1.5 rounded">content/blog/your-post.md</code>
+                                <p className="text-muted-foreground mb-4">Start creating posts from the admin panel</p>
+                                <Link href="/admin/blog" className="text-primary hover:underline">
+                                    Go to Admin Panel
+                                </Link>
                             </div>
                         ) : (
                             <div className="space-y-6">
-                                {posts.map((post) => (
+                                {posts.map((post: BlogPost) => (
                                     <Link
                                         key={post.slug}
                                         href={`/blog/${post.slug}`}
@@ -50,8 +57,8 @@ export default function BlogPage() {
                                     >
                                         <div className="flex items-center gap-2 text-sm text-muted-foreground mb-3">
                                             <Calendar className="w-4 h-4" />
-                                            <time dateTime={post.date}>
-                                                {new Date(post.date).toLocaleDateString("en-GB", {
+                                            <time dateTime={post.created_at}>
+                                                {new Date(post.created_at).toLocaleDateString("en-GB", {
                                                     day: "numeric",
                                                     month: "long",
                                                     year: "numeric",
@@ -61,7 +68,7 @@ export default function BlogPage() {
                                         <h2 className="text-xl font-semibold text-foreground mb-2 group-hover:text-primary transition-colors">
                                             {post.title}
                                         </h2>
-                                        <p className="text-muted-foreground">{post.description}</p>
+                                        {post.description && <p className="text-muted-foreground">{post.description}</p>}
                                     </Link>
                                 ))}
                             </div>

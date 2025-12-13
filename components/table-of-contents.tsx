@@ -1,8 +1,8 @@
 "use client"
 
 import { useState, useEffect } from "react"
+import { cn } from "@/lib/utils"
 import { List } from "lucide-react"
-import {cn} from "@/app/utils";
 
 interface TableOfContentsItem {
     id: string

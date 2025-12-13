@@ -5,7 +5,7 @@ import type React from "react"
 import { useState } from "react"
 import { useRouter, usePathname } from "next/navigation"
 import { Menu, X } from "lucide-react"
-import { cn } from "@/app/utils"
+import { cn } from "@/lib/utils"
 import { ThemeToggle } from "@/components/theme-toggle"
 import { ConstellationLogo } from "@/components/constellation-logo"
 
@@ -20,6 +20,7 @@ const navItems: NavItem[] = [
     { label: "Interests", href: "#interests" },
     { label: "Blog", href: "/blog" },
     { label: "Contact", href: "#contact" },
+    { label: "Admin", href: "/admin/blog" },
 ]
 
 export function Navigation() {

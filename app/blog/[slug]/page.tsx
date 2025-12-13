@@ -1,3 +1,4 @@
+import { createClient } from "@/lib/supabase/server"
 import { Navigation } from "@/components/navigation"
 import { Footer } from "@/components/footer"
 import { NeuralNetworkBg } from "@/components/neural-network-bg"
@@ -6,20 +7,41 @@ import { TableOfContents } from "@/components/table-of-contents"
 import { Calendar, ArrowLeft } from "lucide-react"
 import Link from "next/link"
 import { notFound } from "next/navigation"
-import {extractTableOfContents, getAllPosts, getPostBySlug} from "@/app/blog";
 
 interface BlogPostPageProps {
     params: Promise<{ slug: string }>
 }
 
+function extractTableOfContents(markdown: string) {
+    const headingRegex = /^(#{1,6})\s+(.+)$/gm
+    const items: Array<{ id: string; text: string; level: number }> = []
+    let match
+
+    while ((match = headingRegex.exec(markdown)) !== null) {
+        const level = match[1].length
+        const text = match[2].trim()
+        const id = text
+            .toLowerCase()
+            .replace(/[^a-z0-9\s-]/g, "")
+            .replace(/\s+/g, "-")
+
+        items.push({ id, text, level })
+    }
+
+    return items
+}
+
 export async function generateStaticParams() {
-    const posts = getAllPosts()
-    return posts.map((post) => ({ slug: post.slug }))
+    const supabase = await createClient()
+    const { data: posts } = await supabase.from("blog_posts").select("slug").eq("published", true)
+
+    return posts?.map((post) => ({ slug: post.slug })) || []
 }
 
 export async function generateMetadata({ params }: BlogPostPageProps) {
     const { slug } = await params
-    const post = getPostBySlug(slug)
+    const supabase = await createClient()
+    const { data: post } = await supabase.from("blog_posts").select("*").eq("slug", slug).eq("published", true).single()
 
     if (!post) {
         return { title: "Post Not Found" }
@@ -33,7 +55,8 @@ export async function generateMetadata({ params }: BlogPostPageProps) {
 
 export default async function BlogPostPage({ params }: BlogPostPageProps) {
     const { slug } = await params
-    const post = getPostBySlug(slug)
+    const supabase = await createClient()
+    const { data: post } = await supabase.from("blog_posts").select("*").eq("slug", slug).eq("published", true).single()
 
     if (!post) {
         notFound()
@@ -44,9 +67,8 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
     return (
         <main className="relative min-h-screen bg-background">
             <NeuralNetworkBg />
+            <Navigation />
             <div className="relative z-10">
-                <Navigation />
-
                 <article className="pt-32 pb-20 px-6">
                     <div className="max-w-6xl mx-auto">
                         <Link
@@ -57,13 +79,12 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                         </Link>
 
                         <div className="flex gap-12">
-                            {/* Main content */}
                             <div className="flex-1 min-w-0">
                                 <header className="mb-8">
                                     <div className="flex items-center gap-2 text-sm text-muted-foreground mb-4">
                                         <Calendar className="w-4 h-4" />
-                                        <time dateTime={post.date}>
-                                            {new Date(post.date).toLocaleDateString("en-GB", {
+                                        <time dateTime={post.created_at}>
+                                            {new Date(post.created_at).toLocaleDateString("en-GB", {
                                                 day: "numeric",
                                                 month: "long",
                                                 year: "numeric",
@@ -79,7 +100,6 @@ export default async function BlogPostPage({ params }: BlogPostPageProps) {
                                 </div>
                             </div>
 
-                            {/* Sidebar with Table of Contents */}
                             {tableOfContents.length > 0 && (
                                 <aside className="hidden lg:block w-64 flex-shrink-0">
                                     <TableOfContents items={tableOfContents} />

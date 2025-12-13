@@ -1,43 +1,60 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import {Navigation} from "@/components/navigation";
-import React from "react";
-import {ThemeProvider} from "@/components/theme-provider";
+import type React from "react"
+import type { Metadata } from "next"
+import { Inter, Geist_Mono } from "next/font/google"
+import { Analytics } from "@vercel/analytics/next"
+import { PageTransition } from "@/components/page-transition"
+import "./globals.css"
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
+const _inter = Inter({ subsets: ["latin"] })
+const _geistMono = Geist_Mono({ subsets: ["latin"] })
 
 export const metadata: Metadata = {
-  title: "Srikrishna Nethi - Portfolio",
-  description: "My personal portfolio website",
-};
+    title: "Srikrishna Nethi | ML & Deep Learning",
+    description:
+        "A-Level student passionate about machine learning, deep learning, and artificial intelligence. Currently studying at Herschel Grammar School.",
+    generator: "v0.app",
+    icons: {
+        icon: [
+            {
+                url: "/icon-light-32x32.png",
+                media: "(prefers-color-scheme: light)",
+            },
+            {
+                url: "/icon-dark-32x32.png",
+                media: "(prefers-color-scheme: dark)",
+            },
+            {
+                url: "/icon.svg",
+                type: "image/svg+xml",
+            },
+        ],
+        apple: "/apple-icon.png",
+    },
+}
+
+const themeScript = `
+  (function() {
+    const theme = localStorage.getItem('theme');
+    if (theme === 'dark' || (!theme && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    }
+  })();
+`
 
 export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode;
+                                       children,
+                                   }: Readonly<{
+    children: React.ReactNode
 }>) {
-  return (
-    <html lang="en" suppressHydrationWarning>
+    return (
+        <html lang="en" suppressHydrationWarning>
         <head>
-            <meta name="darkreader" content="disable" />
+            <script dangerouslySetInnerHTML={{ __html: themeScript }} />
         </head>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-      <Navigation />
-      <ThemeProvider attribute="data-theme" defaultTheme="light">
-          {children}
-      </ThemeProvider>
-      </body>
-    </html>
-  );
+        <body className={`font-sans antialiased overflow-x-hidden ${themeScript && ""}`}>
+        <PageTransition>{children}</PageTransition>
+        <Analytics />
+        </body>
+        </html>
+    )
 }
